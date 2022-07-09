@@ -1,10 +1,11 @@
-import { ErrorDialogComponent } from './../../shared/components/error-dialog/error-dialog.component';
-import { ExpensesService } from './../services/expenses.service';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, Observable, of } from 'rxjs';
 
 import { Expense } from '../model/expense';
-import { catchError, Observable, of } from 'rxjs';
-import { MatDialog } from '@angular/material/dialog';
+import { ErrorDialogComponent } from './../../shared/components/error-dialog/error-dialog.component';
+import { ExpensesService } from './../services/expenses.service';
 
 @Component({
   selector: 'app-expenses',
@@ -15,11 +16,13 @@ export class ExpensesComponent implements OnInit {
 
   expenses$: Observable<Expense[]>;
   displayedColumns = [
-    'item', 'receiver', 'number_installments','due_date','purchase_date', 'value_installments'
+    'item', 'receiver', 'number_installments','due_date','purchase_date', 'value_installments', 'actions'
   ];
 
   constructor(private expensesService: ExpensesService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
+    private activatedRoute: ActivatedRoute
     ) {
     this.expenses$ = this.expensesService.expenseList()
     .pipe(
@@ -36,6 +39,10 @@ export class ExpensesComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  onAdd(){
+    this.router.navigate(['new'], {relativeTo: this.activatedRoute});
   }
 
 }

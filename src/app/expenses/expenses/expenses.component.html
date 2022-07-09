@@ -14,30 +14,54 @@
         <th mat-header-cell *matHeaderCellDef>Credor</th>
         <td mat-cell *matCellDef="let expense">
           {{ expense.receiver }}
-          <mat-icon aria-hidden="false" aria-label="Example home icon">{{
-            expense.receiver | receiver
-          }}</mat-icon>
         </td>
+        <!-- Number installments Column -->
       </ng-container>
       <ng-container matColumnDef="number_installments">
         <th mat-header-cell *matHeaderCellDef>Numero de Parcelas</th>
         <td mat-cell *matCellDef="let expense">
           {{ expense.number_installments }}
         </td>
+        <!-- Purchase date Column -->
       </ng-container>
       <ng-container matColumnDef="purchase_date">
         <th mat-header-cell *matHeaderCellDef>Data de Compra</th>
         <td mat-cell *matCellDef="let expense">{{ expense.purchase_date }}</td>
       </ng-container>
+      <!-- Due date Column -->
       <ng-container matColumnDef="due_date">
         <th mat-header-cell *matHeaderCellDef>Dia de vencimento</th>
         <td mat-cell *matCellDef="let expense">{{ expense.due_date }}</td>
       </ng-container>
+      <!-- Value installments Column -->
       <ng-container matColumnDef="value_installments">
         <th mat-header-cell *matHeaderCellDef>Volor da parcela</th>
         <td mat-cell *matCellDef="let expense">
           {{ expense.value_installments }}
+
+          <mat-icon aria-hidden="false" aria-label="Icone inlustrativo">{{
+            expense.receiver | receiver
+          }}</mat-icon>
         </td>
+      </ng-container>
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          <button mat-mini-fab color="accent" aria-label="Adicionar Despesa">
+            <mat-icon (click)="onAdd()" >add</mat-icon>
+          </button>
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let expense">
+          <button mat-icon-button color="primary" aria-label="Adicionar Despesa">
+            <mat-icon>edit</mat-icon>
+          </button>
+
+          <button mat-icon-button color="warn" aria-label="Remover Despesa">
+            <mat-icon>delete</mat-icon>
+          </button>
+
+        </mat-cell>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
