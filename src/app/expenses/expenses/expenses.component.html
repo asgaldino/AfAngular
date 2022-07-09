@@ -1,0 +1,52 @@
+<mat-card>
+  <mat-toolbar color="primary">
+    <span>Despesas</span>
+  </mat-toolbar>
+  <div *ngIf="expenses$ | async as expenses; else loading">
+    <table mat-table [dataSource]="expenses" class="mat-elevation-z8">
+      <!-- Item Column -->
+      <ng-container matColumnDef="item">
+        <th mat-header-cell *matHeaderCellDef>Item</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.item }}</td>
+      </ng-container>
+      <!-- Receiver Column -->
+      <ng-container matColumnDef="receiver">
+        <th mat-header-cell *matHeaderCellDef>Credor</th>
+        <td mat-cell *matCellDef="let expense">
+          {{ expense.receiver }}
+          <mat-icon aria-hidden="false" aria-label="Example home icon">{{
+            expense.receiver | receiver
+          }}</mat-icon>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="number_installments">
+        <th mat-header-cell *matHeaderCellDef>Numero de Parcelas</th>
+        <td mat-cell *matCellDef="let expense">
+          {{ expense.number_installments }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="purchase_date">
+        <th mat-header-cell *matHeaderCellDef>Data de Compra</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.purchase_date }}</td>
+      </ng-container>
+      <ng-container matColumnDef="due_date">
+        <th mat-header-cell *matHeaderCellDef>Dia de vencimento</th>
+        <td mat-cell *matCellDef="let expense">{{ expense.due_date }}</td>
+      </ng-container>
+      <ng-container matColumnDef="value_installments">
+        <th mat-header-cell *matHeaderCellDef>Volor da parcela</th>
+        <td mat-cell *matCellDef="let expense">
+          {{ expense.value_installments }}
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+  <ng-template #loading>
+    <div class="loading-spinner">
+      <mat-spinner></mat-spinner>
+    </div>
+  </ng-template>
+</mat-card>
