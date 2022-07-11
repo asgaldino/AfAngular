@@ -1,6 +1,5 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { first, tap } from 'rxjs';
 
 import { Expense } from '../model/expense';
@@ -15,8 +14,6 @@ export class ExpensesService {
 
   constructor(
     private httpClient: HttpClient
-    //private formBuilder: FormBuilder,
-    //private expenseFormComponent: ExpenseFormComponent *** Nâo Funciona
     ) {
    }
 
@@ -34,6 +31,5 @@ export class ExpensesService {
     //console.log(record);
     return this.httpClient.post<Expense>(this.ApiAdd, record)
     .pipe(first());
-
   }
 }

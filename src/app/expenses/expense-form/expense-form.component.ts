@@ -1,8 +1,8 @@
+import { Location } from '@angular/common';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute } from '@angular/router';
 import { Expense } from '../model/expense';
 
 import { ExpensesService } from './../services/expenses.service';
@@ -16,18 +16,21 @@ export class ExpenseFormComponent implements OnInit {
 
   form: FormGroup;
   formId: FormGroup;
-  private readonly ApiAdd = '/api/expense/add'
-  userid: any;
+  userid: string = '';
+  ApiAdd: string = '/api/expense/add';
+
 
   constructor(
     private formBuilder: FormBuilder,
     private service: ExpensesService,
     private snackBar: MatSnackBar,
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private location: Location
+
 
     ) {
     this.formId = formBuilder.group({
-      userid: [null]
+      userid: null
     })
     this.form = formBuilder.group({
       item: [null],
@@ -42,30 +45,20 @@ export class ExpenseFormComponent implements OnInit {
 
   ngOnInit(): void {
   }
-/*
-  onSubmit(){
-    this.service.save(this.form.value)
-    .subscribe(result => console.log(result), error => this.onError());
-  }
-
+  
   save(record: Expense){
-    const userid = this.formId.value.toString()
-    //const params = new HttpParams()
-    const params = new HttpParams()
-      .set('userid', '5');
-    const url = this.ApiAdd;
-    console.log(url, null, { params: params })
-
-    //console.log(record);
-    return this.httpClient.post<Expense>(url, null, { params: params });
-
+    let value = this.formId.value.userid;
+    const params = new HttpParams().set('userid', value);
+    return this.httpClient.post<Expense>(this.ApiAdd, record, {params});
   }
-  */
+
   onSubmit(){
-    this.service.save(this.form.value)
+    this.save(this.form.value)
     .subscribe(result => console.log(result), error => this.onError());
+    this.onCancel();
   }
   onCancel(){
+    this.location.back();
 
   }
   private onError(){
