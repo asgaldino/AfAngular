@@ -1,5 +1,6 @@
 export interface Expense {
-  _id: String;
+  id: String;
   item: String;
   receiver: String;
+  userid: String;
 }
