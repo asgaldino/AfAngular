@@ -1,3 +1,4 @@
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,24 +16,27 @@ import { ExpensesService } from './../services/expenses.service';
 export class ExpensesComponent implements OnInit {
 
   expenses$: Observable<Expense[]>;
+
   displayedColumns = [
-    'item', 'receiver', 'number_installments','due_date','purchase_date', 'value_installments', 'actions'
+    'id', 'item', 'receiver', 'number_installments','due_date','purchase_date', 'value_installments', 'actions'
   ];
 
-  constructor(private expensesService: ExpensesService,
+  constructor(
+    private expensesService: ExpensesService,
     public dialog: MatDialog,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private httpClient: HttpClient
     ) {
     this.expenses$ = this.expensesService.expenseList()
     .pipe(
       catchError(error =>{
-        this.onError('Erro ao carregar despesas')
+        this.onOpenError('Erro ao carregar despesas')
         return of([])
       })
     );
   }
-  onError(errorMsg: string) {
+  onOpenError(errorMsg: string) {
     this.dialog.open(ErrorDialogComponent, {
       data: errorMsg
     });
@@ -45,4 +49,25 @@ export class ExpensesComponent implements OnInit {
     this.router.navigate(['new'], {relativeTo: this.activatedRoute});
   }
 
+  onDelete(){
+    //var id = (<HTMLSelectElement>document.getElementById('id')).value;
+    var id = '11';
+
+    //console.log(this.expenses$.forEach)
+    //{if(confirm('Erro ao deletar despesa')){window.location.reload();}}
+    //let value = '8';
+    console.log(id)
+    const params = new HttpParams().set('id', id);
+    this.httpClient.delete('/api/expense/delete', {params})
+    .subscribe(result => console.log(result))
+    //location.reload()
+  }
+  trataResposta() {
+    let value = this.expenses$.subscribe();
+    console.log(value)
+    //Qualquer tratamento necessário
+  }
+  onEdit(){
+
+  }
 }
